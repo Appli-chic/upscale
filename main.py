@@ -1,5 +1,4 @@
 from aura_sr import AuraSR
-import requests
 from io import BytesIO
 from PIL import Image
 from flask import Flask, request, send_file
@@ -7,22 +6,22 @@ from flask import Flask, request, send_file
 app = Flask(__name__)
 aura_sr = AuraSR.from_pretrained("fal/AuraSR-v2")
 
-def load_image_from_url(url):
-    response = requests.get(url)
-    image_data = BytesIO(response.content)
-    return Image.open(image_data)
-
-@app.route('/upscale', methods=['GET'])
+@app.route('/upscale', methods=['POST'])
 def upscale():
-    # Get the image URL from the request parameters
-    image_url = request.args.get('url')
+    # Check if the post request has the file part
+    if 'file' not in request.files:
+        return "Please provide an image file in the request", 400
 
-    if not image_url:
-        return "Please provide an image URL as a parameter", 400
+    file = request.files['file']
+
+    # If the user does not select a file, the browser submits an
+    # empty file without a filename.
+    if file.filename == '':
+        return "No selected file", 400
 
     try:
-        # Load the image from the URL
-        image = load_image_from_url(image_url)
+        # Load the image from the uploaded file
+        image = Image.open(file.stream)
 
         # Upscale the image
         upscaled_image = aura_sr.upscale_4x_overlapped(image)
