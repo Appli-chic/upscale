@@ -27,6 +27,10 @@ def upscale():
         # Load the image from the uploaded file
         image = Image.open(file.stream)
 
+        # Convert image to RGB mode if it has an alpha channel (for PNG files)
+        if image.mode == 'RGBA':
+            image = image.convert('RGB')
+
         # Upscale the image
         upscaled_image = aura_sr.upscale_4x_overlapped(image)
 
@@ -57,6 +61,10 @@ def upscale_url():
 
         # Load the image from the response content
         image = Image.open(BytesIO(response.content))
+
+        # Convert image to RGB mode if it has an alpha channel (for PNG files)
+        if image.mode == 'RGBA':
+            image = image.convert('RGB')
 
         # Upscale the image
         upscaled_image = aura_sr.upscale_4x_overlapped(image)
