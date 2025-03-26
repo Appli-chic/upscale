@@ -8,6 +8,7 @@ Django==5.1.6
 einops==0.8.1
 filelock==3.17.0
 Flask==3.1.0
+flask-cors==5.0.1
 fsspec==2025.2.0
 huggingface-hub==0.29.1
 idna==3.10
@@ -23,7 +24,6 @@ pillow==11.1.0
 PyYAML==6.0.2
 requests==2.32.3
 safetensors==0.5.3
-setuptools==75.8.2
 six==1.17.0
 sqlparse==0.5.3
 sympy==1.13.1

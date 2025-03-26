@@ -2,8 +2,11 @@ from aura_sr import AuraSR
 from io import BytesIO
 from PIL import Image
 from flask import Flask, request, send_file
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 aura_sr = AuraSR.from_pretrained("fal/AuraSR-v2")
 
 @app.route('/upscale', methods=['POST'])
@@ -38,4 +41,4 @@ def upscale():
         return f"Error processing image: {str(e)}", 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
